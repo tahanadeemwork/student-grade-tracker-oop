@@ -46,3 +46,19 @@ class Student:
         lines.append(f"Overall average: {avg:.2f}")
         return "\n".join(lines)
 
+class HonorsStudent(Student):
+    def calculate_average(self):
+        percentage = super().calculate_average()
+        return self._to_gpa(percentage)
+
+    def _to_gpa(self, percentage):
+        if percentage >= 90:
+            return 4.0
+        elif percentage >= 80:
+            return 3.0
+        elif percentage >= 70:
+            return 2.0
+        elif percentage >= 60:
+            return 1.0
+        else:
+            return 0.0
