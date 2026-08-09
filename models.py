@@ -46,6 +46,23 @@ class Student:
         lines.append(f"Overall average: {avg:.2f}")
         return "\n".join(lines)
 
+    def to_dict(self):
+        return {
+            'type': 'Student',
+            'name': self.name,
+            'grades': self._grades
+        }
+
+    @staticmethod
+    def from_dict(data):
+        if data['type'] == 'HonorsStudent':
+            student = HonorsStudent(data['name'])
+        else:
+            student = Student(data['name'])
+
+        student._grades = data['grades']
+        return student
+
 class HonorsStudent(Student):
     def calculate_average(self):
         percentage = super().calculate_average()
@@ -62,3 +79,8 @@ class HonorsStudent(Student):
             return 1.0
         else:
             return 0.0
+
+    def to_dict(self):
+        data = super().to_dict()
+        data['type'] = 'HonorsStudent'
+        return data
