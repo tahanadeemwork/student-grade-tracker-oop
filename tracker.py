@@ -44,4 +44,26 @@ class GradeTracker:
         self.subjects.add(subject)
         return True
 
-    
+    def view_all_students(self):
+        if not self.students:
+            print("No students recorded yet.")
+            return
+
+        summaries = []
+        for s in self.students:
+            avg = s.calculate_average()
+            summaries.append((s.name, avg))
+
+        summaries.sort(key=lambda pair: pair[1], reverse=True)
+
+        print("\n--- All Students (sorted by average) ---")
+        for name, avg in summaries:
+            print(f"{name}: {avg:.2f}")
+
+    def view_unique_subjects(self):
+        if not self.subjects:
+            print("No subjects recorded yet.")
+            return
+        print("\n--- Unique Subjects ---")
+        for subject in sorted(self.subjects):
+            print(f"- {subject}")
