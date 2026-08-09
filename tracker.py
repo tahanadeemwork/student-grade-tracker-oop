@@ -1,5 +1,7 @@
 from models import Student, HonorsStudent
+import json
 
+DATA_FILE = "students.json"
 
 class GradeTracker:
     def __init__(self):
@@ -67,3 +69,23 @@ class GradeTracker:
         print("\n--- Unique Subjects ---")
         for subject in sorted(self.subjects):
             print(f"- {subject}")
+
+    def save(self):
+        data = [student.to_dict() for student in self.students]
+        with open(DATA_FILE, "w") as f:
+            json.dump(data, f, indent=2)
+
+    def load(self):
+        try:
+            with open(DATA_FILE, "r") as f:
+                data = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            self.students = []
+            self.subjects = set()
+            return
+
+        self.students = [Student.from_dict(d) for d in data]
+        self.subjects = set()
+        for student in self.students:
+            for subject in student.get_grades().keys():
+                self.subjects.add(subject)
